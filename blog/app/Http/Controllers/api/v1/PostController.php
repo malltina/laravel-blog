@@ -13,7 +13,7 @@ class PostController extends Controller
     public function index()
     {
         $posts = Post::all();
-        return response($posts,200);
+        return response($posts, 200);
     }
 
     public function store(Request $request)
@@ -24,17 +24,22 @@ class PostController extends Controller
             'user_id' => 'exists:users,id',
         ]);
 
-        $post = Post::create([
+        // $post = Post::create([
+        //     'title' => $attr['title'],
+        //     'body' => $attr['body'],
+        //     'user_id' => Auth::user()->id,
+        // ]);
+
+        $post = Auth::user()->posts()->create([
             'title' => $attr['title'],
-            'body' => $attr['body'],
-            'user_id' => Auth::user()->id,
+            'body' => $attr['body']
         ]);
 
         $response = [
-            'post'=>$post
+            'post' => $post
         ];
-        
-        return response($response,201);
+
+        return response($response, 201);
     }
 
     public function show(Post $post)
@@ -58,10 +63,10 @@ class PostController extends Controller
         ]);
 
         $response = [
-            'post'=>$post
+            'post' => $post
         ];
-        
-        return response($response,201);
+
+        return response($response, 201);
     }
 
     public function destroy(Post $post)

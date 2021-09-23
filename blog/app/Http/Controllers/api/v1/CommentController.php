@@ -31,7 +31,8 @@ class CommentController extends Controller
 
     public function show(Post $post)
     {
-        $comments = Comment::where('post_id', $post->id)->get();
+        // $comments = Comment::where('post_id', $post->id)->get();
+        $comments = $post->Comments;
 
         return response($comments,200);
     }
