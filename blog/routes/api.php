@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\api\v1\AuthenticationController;
+use App\Http\Controllers\api\v1\CommentController;
 use App\Http\Controllers\api\v1\PostController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -18,5 +19,8 @@ Route::group(['prefix' => 'v1'], function () {
         Route::get('posts/{post}', [PostController::class, 'show']);
         Route::put('posts/{post}', [PostController::class, 'update']);
         Route::delete('posts/{post}', [PostController::class, 'destroy']);
+
+        // Comment routes
+        Route::post('posts/{post}/comments', [CommentController::class, 'store']);
     });
 });
