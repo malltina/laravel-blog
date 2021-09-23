@@ -43,9 +43,25 @@ class PostController extends Controller
         return response($post);
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, Post $post)
     {
-        //
+        $attr = $request->validate([
+            'title' => 'required|string|max:255',
+            'body' => 'required|string',
+            'user_id' => 'exists:users,id',
+        ]);
+
+        $post->update([
+            'title' => $attr['title'],
+            'body' => $attr['body'],
+            'user_id' => Auth::user()->id,
+        ]);
+
+        $response = [
+            'post'=>$post
+        ];
+        
+        return response($response,201);
     }
 
     public function destroy($id)
