@@ -3,60 +3,51 @@
 namespace App\Http\Controllers\api\v1;
 
 use App\Http\Controllers\Controller;
+use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
-        //
+        $posts = Post::all();
+        return response($posts,200);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        //
+        $attr = $request->validate([
+            'title' => 'required|string|max:255',
+            'body' => 'required|string',
+            'user_id' => 'exists:users,id',
+        ]);
+
+        $post = Post::create([
+            'title' => $attr['title'],
+            'body' => $attr['body'],
+            'user_id' => Auth::user()->id,
+        ]);
+
+        $response = [
+            'post'=>$post
+        ];
+        
+        return response($response,201);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function show(Post $post)
     {
-        //
+        // TODO:: if there is no post with this id we get error, we should handle this situation
+        return response($post);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         //
