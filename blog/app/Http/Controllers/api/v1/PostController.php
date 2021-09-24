@@ -56,6 +56,8 @@ class PostController extends Controller
         //     return response(['error'=>'you have not permisson to this action'],Response::HTTP_FORBIDDEN);
         // }
 
+        $this->authorize($post);
+
         $attr = $request->validate([
             'title' => 'required|string|max:255',
             'body' => 'required|string',
@@ -81,6 +83,8 @@ class PostController extends Controller
         // if($post->user_id !== Auth::user()->id){
         //     return response(['error'=>'you have not permisson to this action'],Response::HTTP_FORBIDDEN);
         // }
+
+        $this->authorize($post);
 
         return $post->delete();
 
