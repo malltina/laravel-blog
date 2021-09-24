@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Comment;
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class CommentController extends Controller
 {
@@ -20,7 +21,7 @@ class CommentController extends Controller
             'post_id'=>$post->id
         ]);
 
-        return response($comment, 201);
+        return response($comment, Response::HTTP_CREATED);
     }
 
     public function show(Post $post)
@@ -28,6 +29,6 @@ class CommentController extends Controller
         // $comments = Comment::where('post_id', $post->id)->get();
         $comments = $post->Comments;
 
-        return response($comments,200);
+        return response($comments,Response::HTTP_OK);
     }
 }
