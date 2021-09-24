@@ -32,9 +32,9 @@ class PostController extends Controller
         return response($response, 201);
     }
 
-    public function show($id)
+    public function show(Post $post)
     {
-        //
+        return $post;
     }
 
     public function edit($id)
