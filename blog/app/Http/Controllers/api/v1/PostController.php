@@ -14,7 +14,7 @@ class PostController extends Controller
     public function index()
     {
         $posts = Post::all();
-        return response($posts, 200);
+        return response($posts, Response::HTTP_OK);
     }
 
     public function store(Request $request)
@@ -86,8 +86,8 @@ class PostController extends Controller
 
         $this->authorize($post);
 
-        return $post->delete();
+        $post->delete();
 
-        // return response()->noContent();
+        return response()->noContent();
     }
 }
