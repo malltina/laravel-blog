@@ -16,9 +16,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-/*Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});*/
 Route::post('/v1/register', [AuthController::class, 'register']);
 Route::post('/v1/login', [AuthController::class, 'login']);
 Route::get('/v1/posts', [PostController::class, 'index']);
@@ -26,5 +23,5 @@ Route::get('/v1/posts/{post}', [PostController::class, 'show']);
 
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/v1/logout', [AuthController::class, 'logout']);
-    Route::resource('/v1/posts', PostController::class)->except(['index', 'show']);
+    Route::resource('/v1/posts', PostController::class)->except(['index', 'show', 'edit', 'create']);
 });

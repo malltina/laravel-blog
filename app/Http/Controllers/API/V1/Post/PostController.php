@@ -37,18 +37,28 @@ class PostController extends Controller
         return $post;
     }
 
-    public function edit($id)
+    public function update(Request $request, Post $post)
     {
-        //
+        $fields = $request->validate([
+            'title' => 'required|string',
+            'body' => 'required|string'
+        ]);
+        $post->update([
+            'title' => $fields['title'],
+            'body' => $fields['body']
+        ]);
+        $response = [
+            'post' => $post
+        ];
+        return response($response, 201);
     }
 
-    public function update(Request $request, $id)
+    public function destroy(Post $post)
     {
-        //
-    }
-
-    public function destroy($id)
-    {
-        //
+        $post->delete();
+        $response = [
+            'message' => 'post was deleted',
+        ];
+        return response($response, 200);
     }
 }
