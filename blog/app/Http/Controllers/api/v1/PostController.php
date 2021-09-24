@@ -51,6 +51,11 @@ class PostController extends Controller
 
     public function update(Request $request, Post $post)
     {
+        //method one for authorization
+        // if($post->user_id !== Auth::user()->id){
+        //     return response(['error'=>'you have not permisson to this action'],Response::HTTP_FORBIDDEN);
+        // }
+
         $attr = $request->validate([
             'title' => 'required|string|max:255',
             'body' => 'required|string',
@@ -72,6 +77,11 @@ class PostController extends Controller
 
     public function destroy(Post $post)
     {
+        //method one for authorization
+        // if($post->user_id !== Auth::user()->id){
+        //     return response(['error'=>'you have not permisson to this action'],Response::HTTP_FORBIDDEN);
+        // }
+
         return $post->delete();
 
         // return response()->noContent();
