@@ -4,15 +4,14 @@ namespace App\Http\Controllers\API\V1\Comment;
 
 use App\Http\Controllers\Controller;
 use App\Models\Comment;
-use App\Models\Post;
 use Illuminate\Http\Request;
 
 class CommentController extends Controller
 {
 
-    public function index()
+    public function index(Request $request)
     {
-        //return Comment::all()->with(['user', 'post']);
+        return Comment::where('post_id', $request->post)->get();
     }
 
 
@@ -38,10 +37,4 @@ class CommentController extends Controller
         return response($response, 201);
     }
 
-
-
-    public function destroy($id)
-    {
-        //
-    }
 }
