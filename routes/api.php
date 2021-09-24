@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\API\V1\Auth\AuthController;
+use App\Http\Controllers\API\V1\Comment\CommentController;
 use App\Http\Controllers\API\V1\Post\PostController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -23,5 +24,7 @@ Route::get('/v1/posts/{post}', [PostController::class, 'show']);
 
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/v1/logout', [AuthController::class, 'logout']);
-    Route::resource('/v1/posts', PostController::class)->except(['index', 'show', 'edit', 'create']);
+    Route::resource('/v1/posts', PostController::class)->except(['show', 'edit', 'create']);
+    Route::post('/v1/posts/{post}/comments', [CommentController::class , 'store']);
+    Route::get('/v1/posts/{post}/comments', [CommentController::class , 'index']);
 });
