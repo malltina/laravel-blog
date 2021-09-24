@@ -11,7 +11,7 @@ class PostController extends Controller
 
     public function index()
     {
-        return Post::paginate(5);
+        return Post::with('user')->paginate(5);
     }
 
 
@@ -21,8 +21,9 @@ class PostController extends Controller
             'title' => 'required|string',
             'body' => 'required|string'
         ]);
-
+        $fields['user_id'] = auth()->user()->id;
         $post = Post::create([
+            'user_id' => $fields['user_id'],
             'title' => $fields['title'],
             'body' => $fields['body']
         ]);

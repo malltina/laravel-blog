@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\API\V1\Auth\AuthController;
 use App\Http\Controllers\API\V1\Post\PostController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,12 +15,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::post('/v1/register', [AuthController::class, 'register']);
-Route::post('/v1/login', [AuthController::class, 'login']);
-Route::get('/v1/posts', [PostController::class, 'index']);
-Route::get('/v1/posts/{post}', [PostController::class, 'show']);
+Route::prefix('v1')->group(function () {
+    Route::post('/register', [AuthController::class, 'register']);
+    Route::post('/login', [AuthController::class, 'login']);
+    Route::get('/posts', [PostController::class, 'index']);
+    Route::get('/posts/{post}', [PostController::class, 'show']);
+});
 
-Route::middleware(['auth:sanctum'])->group(function () {
-    Route::post('/v1/logout', [AuthController::class, 'logout']);
-    Route::resource('/v1/posts', PostController::class)->except(['index', 'show', 'edit', 'create']);
+Route::middleware(['auth:sanctum'])->prefix('v1')->group(function () {
+    Route::post('/logout', [AuthController::class, 'logout']);
+    Route::resource('/posts', PostController::class)->except(['show', 'edit', 'create']);
 });
