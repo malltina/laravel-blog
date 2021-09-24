@@ -26,5 +26,6 @@ Route::group(['prefix' => 'v1'], function () {
         // Comment routes
         Route::post('posts/{post}/comments', [CommentController::class, 'store']);
         Route::get('posts/{post}/comments', [CommentController::class, 'show']);
+        
     });
 });
