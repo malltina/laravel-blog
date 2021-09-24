@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Symfony\Component\HttpFoundation\Response;
 
 class PostController extends Controller
 {
@@ -30,6 +31,7 @@ class PostController extends Controller
         //     'user_id' => Auth::user()->id,
         // ]);
 
+
         $post = Auth::user()->posts()->create([
             'title' => $attr['title'],
             'body' => $attr['body']
@@ -39,12 +41,11 @@ class PostController extends Controller
             'post' => $post
         ];
 
-        return response($response, 201);
+        return response($response, Response::HTTP_CREATED);
     }
 
     public function show(Post $post)
     {
-        // TODO:: if there is no post with this id we get error, we should handle this situation
         return response($post);
     }
 
@@ -66,11 +67,13 @@ class PostController extends Controller
             'post' => $post
         ];
 
-        return response($response, 201);
+        return response($response, Response::HTTP_OK);
     }
 
     public function destroy(Post $post)
     {
         return $post->delete();
+
+        // return response()->noContent();
     }
 }
