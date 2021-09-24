@@ -11,7 +11,11 @@ class CommentController extends Controller
 
     public function index(Request $request)
     {
-        return Comment::where('post_id', $request->post)->get();
+        //return Comment::where('post_id', $request->post);
+        return Comment::with(['post', 'user' => function ($query) use ($request) {
+            $query->where('post_id', $request->post);
+        }])->get();
+
     }
 
 
