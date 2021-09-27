@@ -25,7 +25,7 @@ Route::prefix('v1')->group(function () {
 });
 
 Route::middleware(['auth:sanctum'])->prefix('v1')->group(function () {
-    Route::post('/logout', [AuthController::class, 'logout']);
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::resource('/posts', PostController::class)->except(['show', 'edit', 'create']);
     Route::post('/posts/{post}/comments', [CommentController::class , 'store']);
 });
