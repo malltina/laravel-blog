@@ -11,6 +11,7 @@ Route::group(['prefix' => 'v1'], function () {
     
     Route::get('register', [AuthenticationController::class, 'register']);
     Route::post('login', [AuthenticationController::class, 'login']);
+    Route::get('chunk', [PostController::class, 'chunk']);
 
     Route::group(['middleware' => 'auth:sanctum','as'=>'posts.'], function () {
 
