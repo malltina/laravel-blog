@@ -20,10 +20,7 @@ class CommentTest extends TestCase
     {
         $user = User::factory()->create();
         $post = Post::factory()->create(['user_id'=>$user->id]);
-        $comment = [
-            'body' => 'this is body for comment',
-            'post_id' => $post->id
-        ];
+        $comment = Comment::factory()->raw(['post_id'=>$post->id]);
         $this->actingAs($user)
             ->postJson(route('posts.comment.store', ['post' => $post]), $comment);
         $this->assertDatabaseHas('comments',$comment);
@@ -36,10 +33,23 @@ class CommentTest extends TestCase
     {
         $user = User::factory()->create();
         $post = Post::factory()->create(['user_id'=>$user->id]);
-        $comment = Comment::factory()->raw(['post_id'=>$post->id]);
-        $this->actingAs($user)
-            ->postJson(route('posts.comment.store', ['post' => $post]), $comment);
-        $this->assertDatabaseHas('comments',$comment);
+        $comment = Comment::factory(3)->create(['post_id'=>$post->id]);
+        $response = $this->actingAs($user)
+            ->getJson(route('posts.comment.show',$post));
+        $response->assertJsonCount(3);
+        $this->assertDatabaseCount('comments',3);
     }
 
+    /**
+     * @test
+     */
+    public function body_is_required_for_creating_comment()
+    {
+        $user = User::factory()->create();
+        $post = Post::factory()->create(['user_id'=>$user->id]);
+        $comment = Comment::factory()->raw(['body'=>null,'post_id'=>$post->id]);
+        $this->actingAs($user)
+            ->postJson(route('posts.comment.store', ['post' => $post]), $comment);
+        $this->assertDatabaseMissing('comments',$comment);
+    }
 }
