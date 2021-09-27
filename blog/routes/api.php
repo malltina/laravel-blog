@@ -11,7 +11,6 @@ Route::group(['prefix' => 'v1'], function () {
     
     Route::get('register', [AuthenticationController::class, 'register']);
     Route::post('login', [AuthenticationController::class, 'login']);
-    Route::get('chunk', [PostController::class, 'chunk']);
 
     Route::group(['middleware' => 'auth:sanctum','as'=>'posts.'], function () {
 
@@ -25,7 +24,7 @@ Route::group(['prefix' => 'v1'], function () {
         Route::delete('posts/{post}', [PostController::class, 'destroy']);
 
         // Comment routes
-        Route::post('posts/{post}/comments', [CommentController::class, 'store']);
+        Route::post('posts/{post}/comments', [CommentController::class, 'store'])->name('comment.store');
         Route::get('posts/{post}/comments', [CommentController::class, 'show']);
         
     });

@@ -28,7 +28,7 @@ class PostTest extends TestCase
     /** @test */
     public function guest_user_should_not_be_able_to_see_posts()
     {
-        $tasks = Post::factory(3)->create();
+        $post = Post::factory(3)->create();
         $this->getJson(route('posts.index'))
              ->assertUnauthorized();
     }
