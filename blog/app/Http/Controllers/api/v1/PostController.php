@@ -4,6 +4,7 @@ namespace App\Http\Controllers\api\v1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StorePostRequest;
+use App\Http\Requests\UpdatePostRequest;
 use App\Models\Post;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
@@ -34,9 +35,9 @@ class PostController extends Controller
         return response($post);
     }
 
-    public function update(StorePostRequest $request, Post $post)
+    public function update(Post $post,UpdatePostRequest $request)
     {
-        $this->authorize($post);
+        $this->authorize('update',$post);
 
         $validated_request = $request->validated();
 
@@ -51,7 +52,7 @@ class PostController extends Controller
 
     public function destroy(Post $post)
     {
-        $this->authorize($post);
+        $this->authorize('delete',$post);
 
         $post->delete();
 

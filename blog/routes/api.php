@@ -20,8 +20,8 @@ Route::group(['prefix' => 'v1'], function () {
         Route::get('posts', [PostController::class, 'index'])->name('index');
         Route::post('posts', [PostController::class, 'store'])->name('store');
         Route::get('posts/{post}', [PostController::class, 'show']);
-        Route::put('posts/{post}', [PostController::class, 'update']);
-        Route::delete('posts/{post}', [PostController::class, 'destroy']);
+        Route::put('posts/{post}', [PostController::class, 'update'])->name('update');
+        Route::delete('posts/{post}', [PostController::class, 'destroy'])->name('destroy');
 
         // Comment routes
         Route::post('posts/{post}/comments', [CommentController::class, 'store'])->name('comment.store');

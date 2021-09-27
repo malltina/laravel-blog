@@ -36,8 +36,6 @@ class PostTest extends TestCase
     /** @test */
     public function only_auth_user_can_create_post()
     {
-        $this->withoutExceptionHandling();
-
         $user = User::factory()->create();
         $attributes = Post::factory()->raw();
         $response = $this->actingAs($user)->postJson(route('posts.store'), $attributes);
@@ -57,5 +55,24 @@ class PostTest extends TestCase
         $attributes['user_id'] = auth()->user()->id;
         $this->assertDatabaseMissing('posts',$attributes);
         $response->assertUnprocessable();
+    }
+    
+    /** @test */
+    public function post_can_updated_by_onwer()
+    {
+        $user = User::factory()->create();
+        $post = Post::factory()->create(['user_id'=>$user->id]);
+        $attribute = Post::factory()->raw(['user_id'=>$user->id]);
+        $this->actingAs($user)->putJson(route('posts.update',$post), $attribute)->assertOk();
+        $this->assertDatabaseHas('posts',$attribute);
+    }
+
+    /** @test */
+    public function post_can_deleted_by_onwer()
+    {
+        $user = User::factory()->create();
+        $post = Post::factory()->create(['user_id'=>$user->id]);
+        $this->actingAs($user)->deleteJson(route('posts.destroy',$post))->assertNoContent();
+        $this->assertDatabaseMissing('posts',$post->only('id'));
     }
 }
