@@ -28,9 +28,28 @@ class PostTest extends TestCase
     /** @test */
     public function guest_user_should_not_be_able_to_see_posts()
     {
-        $post = Post::factory(3)->create();
+        Post::factory(3)->create();
         $this->getJson(route('posts.index'))
              ->assertUnauthorized();
+    }
+
+    /** @test */
+    public function auth_user_can_see_specific_post()
+    {
+        $user = User::factory()->create();
+        $post = Post::factory()->create();//TODO: how can i show specific post
+        $this->actingAs($user)->getJson(route('posts.show',$post))->assertOk();
+    }
+
+    /** @test */
+    public function auth_user_can_see_all_posts()
+    {
+        $user = User::factory()->create();
+        Post::factory(3)->create();
+        Post::factory(2)->create(['user_id'=>$user->id]);
+        $response = $this->actingAs($user)->getJson(route('posts.index'))->assertOk();
+        $response->assertJsonCount(5);
+        $this->assertDatabaseCount('posts',5);
     }
 
     /** @test */
@@ -50,9 +69,8 @@ class PostTest extends TestCase
     public function title_and_body_is_required_for_creating_post($attributes)
     {
         $user = User::factory()->create();
-        // $attributes = Post::factory()->raw(['body'=>null]);
         $response = $this->actingAs($user)->postJson(route('posts.store'), $attributes);
-        $attributes['user_id'] = auth()->user()->id;
+        $attributes['user_id'] = $user->id;
         $this->assertDatabaseMissing('posts',$attributes);
         $response->assertUnprocessable();
     }
