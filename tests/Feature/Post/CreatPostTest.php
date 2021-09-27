@@ -50,4 +50,22 @@ class CreatPostTest extends TestCase
         ])->assertSessionDoesntHaveErrors('title');
     }
 
+    public function test_create_post_body_validation_work()
+    {
+        $user = User::factory()->create();
+        Sanctum::actingAs($user);
+
+        $this->post(route('posts.store'), [
+            'body' => ''
+        ])->assertSessionHasErrors('body');
+
+        $this->post(route('posts.store'), [
+            'body' => 123
+        ])->assertSessionHasErrors('body');
+
+        $this->post(route('posts.store'), [
+            'body' => 'Test Body'
+        ])->assertSessionDoesntHaveErrors('body');
+    }
+
 }
