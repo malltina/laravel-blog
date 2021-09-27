@@ -1,8 +1,8 @@
 <?php
 
-use App\Http\Controllers\Api\v1\Api\v1\Api\v1\Api\v1\Api\v1\AuthController;
-use App\Http\Controllers\Api\v1\Api\v1\Api\v1\CommentController;
-use App\Http\Controllers\Api\v1\Api\v1\PostController;
+use App\Http\Controllers\Api\v1\AuthController;
+use App\Http\Controllers\Api\v1\CommentController;
+use App\Http\Controllers\Api\v1\PostController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::group(['prefix' => 'v1'], function () {
-    Route::get('register', [AuthController::class, 'register']);
+    Route::post('register', [AuthController::class, 'register']);
     Route::get('login', [AuthController::class, 'login']);
     // sanctum
     Route::group(['middleware' => ['auth:sanctum']], function () {
