@@ -20,4 +20,10 @@ class LogoutTest extends TestCase
         $response->assertStatus(Response::HTTP_OK);
     }
 
+    public function test_unauthenticated_user_can_log_out()
+    {
+        $response = $this->postJson(route('logout'));
+        $response->assertStatus(401);
+    }
+
 }
