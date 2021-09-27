@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StorePostRequest;
+use App\Http\Requests\UpdatePostRequest;
 use App\Models\Post;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 
@@ -11,52 +12,34 @@ class PostController extends Controller
 {
     public function index()
     {
-
         Post::latest()->get();
-
     }
 
-    public function store(Request $request)
+    public function store(StorePostRequest $request)
     {
-        $title = $request->get('title');
-        $body = $request->get('body');
-
-        if (Auth::attempt($request->only('user_id'))) {
-
-
-            Post::query()->create([
-                'title' => $title,
-                'body' => $body,
-
-            ]);
-
-        }
+        $attribute = array_merge($request->validated(), ['user_id' => Auth::id()]);
+        Post::create($attribute);
         return response()->json([
-            'message' => 'only registered user can post'
-        ], 401);
-
+            'message' => 'post has been saved'
+        ], 200);
 
     }
 
-    public function update(Request $request, Post $post)
+    public function update(UpdatePostRequest $request)
     {
-
-
-        $title = $request->get('title');
-        $body = $request->get('body');
-
-        Post::query()->update([
-            'title' => $title,
-            'body' => $body,
-
-        ]);
-
+        $attribute = array_merge($request->validated(), ['user_id' => Auth::id()]);
+        Post::create($attribute);
+        return response()->json([
+            'message' => 'post has been updated'
+        ], 200);
 
     }
 
     public function destroy(Post $post)
     {
-
-        return $post->delete();
+        $post->delete();
+        return response()->json([
+            'message' => 'post has been deleted'
+        ], 200);
     }
 }
