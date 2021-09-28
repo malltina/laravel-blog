@@ -13,18 +13,13 @@ class PostController extends Controller
 {
     public function index()
     {
-        $posts = Post::all();
-        return response($posts, Response::HTTP_OK);
+        return response(Post::all(), Response::HTTP_OK);
     }
 
     public function store(StorePostRequest $request)
     {
-        $validated_request = $request->validated();
-
-        $post = Auth::user()->posts()->create($validated_request);
-
         $response = [
-            'post' => $post
+            'post' => auth()->user()->posts()->create($request->validated())
         ];
 
         return response($response, Response::HTTP_CREATED);
@@ -32,19 +27,15 @@ class PostController extends Controller
 
     public function show(Post $post)
     {
-        return response($post);
+        return response($post, Response::HTTP_OK);
     }
 
-    public function update(Post $post,UpdatePostRequest $request)
+    public function update(Post $post, UpdatePostRequest $request)
     {
         $this->authorize('update',$post);
 
-        $validated_request = $request->validated();
-
-        Auth::user()->Posts()->update($validated_request);
-
         $response = [
-            'post' => $post
+            'post' => auth()->user()->posts()->update($request->validated())
         ];
 
         return response($response, Response::HTTP_OK);

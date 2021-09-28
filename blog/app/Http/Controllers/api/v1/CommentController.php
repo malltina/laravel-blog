@@ -13,15 +13,13 @@ class CommentController extends Controller
 {
     public function store(StoreCommentRequest $request, Post $post)
     {
-        $validated_request = $request->validated();
-        $comment = $post->comments()->create($validated_request);
+        $comment = $post->comments()->create($request->validated());
+        
         return response($comment, Response::HTTP_CREATED);
     }
 
     public function show(Post $post)
     {
-        $comments = $post->Comments;
-
-        return response($comments,Response::HTTP_OK);
+        return response($post->Comments,Response::HTTP_OK);
     }
 }
