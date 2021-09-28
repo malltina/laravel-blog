@@ -20,7 +20,7 @@ class PostTest extends TestCase
     use WithFaker;
 
     /** @test */
-    public function user_can_see_all_self_task()
+    public function user_can_see_all_post()
     {
         $user = User::factory()->create();
         Task::factory(3)->create(['author_id' => $user->id]);
