@@ -44,4 +44,16 @@ class UserFactory extends Factory
             ];
         });
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
+     */
+    public function withoutRememerToken()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'remember_token' => null,
+            ];
+        });
+    }
 }

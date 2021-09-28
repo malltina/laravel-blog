@@ -9,72 +9,59 @@ use Tests\TestCase;
 
 class LoginTest extends TestCase
 {
-use RefreshDatabase;
+
+    use RefreshDatabase;
 
     public function test_user_can_login_with_true_credentials()
     {
         $user = User::factory()->create();
-
         $response = $this->postJson(route('login'), [
-            'email' => $user->email,
+            'email'    => $user->email,
             'password' => 'password',
         ]);
         $response->assertStatus(Response::HTTP_CREATED);
-
     }
 
     public function test_user_name_validation_work()
     {
         $data = [
-            'email' => ''
+            'email' => '',
         ];
         $this->post(route('login'), $data)
-            ->assertSessionHasErrors(['email']);
-        ;
-
+             ->assertSessionHasErrors(['email']);;
         $data = [
-            'email' => 'example'
+            'email' => 'example',
         ];
         $this->post(route('login'), $data)
-            ->assertSessionHasErrors(['email']);
-        ;
-
+             ->assertSessionHasErrors(['email']);;
         $data = [
-            'email' => 'example@gmail.com'
+            'email' => 'example@gmail.com',
         ];
         $this->post(route('login'), $data)
-            ->assertSessionDoesntHaveErrors(['email']);
-        ;
+             ->assertSessionDoesntHaveErrors(['email']);;
     }
 
     public function test_user_password_validation_work()
     {
         $data = [
-            'password' => ''
+            'password' => '',
         ];
         $this->post(route('login'), $data)
-            ->assertSessionHasErrors(['password']);
-        ;
-
+             ->assertSessionHasErrors(['password']);;
         $data = [
-            'password' => 'as'
+            'password' => 'as',
         ];
         $this->post(route('login'), $data)
-            ->assertSessionHasErrors(['password']);
-        ;
-
+             ->assertSessionHasErrors(['password']);;
         $data = [
-            'password' => 2134344
+            'password' => 2134344,
         ];
         $this->post(route('login'), $data)
-            ->assertSessionHasErrors(['password']);
-        ;
-
+             ->assertSessionHasErrors(['password']);;
         $data = [
-            'password' => 'asdfgh1234'
+            'password' => 'asdfgh1234',
         ];
         $this->post(route('login'), $data)
-            ->assertSessionDoesntHaveErrors(['password']);
-        ;
+             ->assertSessionDoesntHaveErrors(['password']);;
     }
 }

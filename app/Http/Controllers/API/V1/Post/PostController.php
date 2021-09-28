@@ -8,12 +8,10 @@ use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
-
     public function index()
     {
         return Post::with('user')->paginate(5);
     }
-
 
     public function store(Request $request)
     {
@@ -21,16 +19,8 @@ class PostController extends Controller
             'title' => 'required|string',
             'body' => 'required|string'
         ]);
-        $fields['user_id'] = auth()->user()->id;
-        $post = Post::create([
-            'user_id' => $fields['user_id'],
-            'title' => $fields['title'],
-            'body' => $fields['body']
-        ]);
-        $response = [
-            'post' => $post
-        ];
-        return response($response, 201);
+        $post = auth()->user()->posts()->create($fields);
+        return response($post, 201);
     }
 
     public function show(Post $post)
@@ -44,22 +34,16 @@ class PostController extends Controller
             'title' => 'required|string',
             'body' => 'required|string'
         ]);
-        $post->update([
-            'title' => $fields['title'],
-            'body' => $fields['body']
-        ]);
-        $response = [
-            'post' => $post
-        ];
-        return response($response, 201);
+        $post->update($fields);
+        return response($post, 201);
     }
 
     public function destroy(Post $post)
     {
         $post->delete();
-        $response = [
+
+        return response([
             'message' => 'post was deleted',
-        ];
-        return response($response, 200);
+        ], 200);
     }
 }
