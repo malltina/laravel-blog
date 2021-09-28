@@ -25,11 +25,11 @@ Route::group(['prefix' => 'v1'], function () {
         Route::post('logout', [AuthController::class, 'logout']);
         Route::get('posts', [PostController::class, 'index']);
         Route::post('posts', [PostController::class, 'store']);
-        Route::put('posts/{post}', [PostController::class, 'update']);
+        Route::put('posts/{id}', [PostController::class, 'update']);
         Route::delete('posts/{id}', [PostController::class, 'destroy']);
         // comments
         Route::get('posts/comments', [CommentController::class, 'index']);
-        Route::post('posts/{post}/comments', [CommentController::class, 'store']);
-        Route::delete('posts/{post}/comments', [CommentController::class, 'destroy']);
+        Route::post('posts/{id}/comments', [CommentController::class, 'store']);
+        Route::delete('posts/{id}/comments', [CommentController::class, 'destroy']);
     });
 });

@@ -31,11 +31,12 @@ class PostController extends Controller
         return response($response, 201);
     }
 
-    public function update(UpdatePostRequest $request)
+    public function update(UpdatePostRequest $request, $id)
     {
         $validated = $request->validated();
 
-        $post = Post::update([
+        $post = Post::find($id);
+        $post->update([
             'title' => $validated['title'],
             'body' => $validated['body'],
             'user_id' => Auth::user()->id,
@@ -43,7 +44,7 @@ class PostController extends Controller
 
         $response = $post;
 
-        return response($post, 201);
+        return response($response, 201);
     }
 
     public function destroy($id)
