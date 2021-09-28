@@ -93,4 +93,27 @@ class PostTest extends TestCase
         $this->actingAs($user)->deleteJson(route('posts.destroy',$post))->assertNoContent();
         $this->assertDatabaseMissing('posts',$post->only('id'));
     }
+    
+    /** @test */
+    public function post_can_not_deleted_by_other_users()
+    {
+        $user = User::factory()->create();
+        $post = Post::factory()->create(['user_id'=>$user->id]);
+        $other_user = User::factory()->create();
+        $this->actingAs($other_user)->deleteJson(route('posts.destroy',$post))->assertForbidden();
+        $this->assertDatabaseHas('posts',$post->only('id'));
+    }
+
+    /** @test */
+    public function post_can_not_updated_by_other_users()
+    {
+        $user = User::factory()->create();
+        $post = Post::factory()->create(['user_id'=>$user->id]);
+        $other_user = User::factory()->create();
+        $attribute = Post::factory()->raw(['user_id'=>$other_user->id]);
+        
+        $this->actingAs($other_user)->putJson(route('posts.update',$post), $attribute)->assertForbidden();
+        $this->assertDatabaseHas('posts',$post->only('title'));
+    }
+
 }
