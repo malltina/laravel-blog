@@ -26,7 +26,6 @@ class UpdatePostRequest extends FormRequest
         return [
             'title' => 'string',
             'body' => 'string',
-            'user_id' => 'exists:users,id',
         ];
     }
 }
