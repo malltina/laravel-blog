@@ -38,5 +38,5 @@ Route::put('posts/{post}', [PostController::class, 'update']);
 Route::delete('posts/{post}', [PostController::class, 'destroy']);
 
 // Comment routes
-Route::post('posts/{post}/comments', [CommentController::class, 'store']);
+Route::post('posts/{post}/comments', [CommentController::class, 'postcomment']);
 
